@@ -266,13 +266,15 @@ class Slide2Patch():
                 else:
                     Points = list(zip(*[list(map(int, point.split(', '))) for point in counter['PointsInfo']['ps']]))
                     Ref_x, Ref_y, _, _ = counter['LabelInfo']['CurPicRect'].split(', ')
+                    Left_top = counter['LabelInfo']["ImgLeftTopPoint"]
+                    Left_top_x,Left_top_y = int(Left_top.split(',')[0]),int(Left_top.split(',')[1])
                     Ref_x, Ref_y = int(Ref_x), int(Ref_y)
                     std_scale = counter['LabelInfo']['ZoomScale']
                     Pointsx = []
                     Pointsy = []
                     for i in range(len(Points[0])):
-                        Pointsx.append(int((Points[0][i] + Ref_x) / std_scale))
-                        Pointsy.append(int((Points[1][i] + Ref_y) / std_scale))
+                        Pointsx.append(int((Points[0][i] + Ref_x - Left_top_x) / std_scale))
+                        Pointsy.append(int((Points[1][i] + Ref_y - Left_top_y) / std_scale))
                 SPA_x, SPA_y = (min(Pointsx), min(Pointsy))
                 SPB_x, SPB_y = (max(Pointsx), max(Pointsy))
                 Pointslist = np.array([Pointsx, Pointsy]).transpose(1, 0)
